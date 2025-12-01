@@ -194,19 +194,24 @@
 
 
             const handleLogin = () => {
-                const user = users.find(u => u.email === loginEmail && u.password === loginPassword);
-                if (user) {
-                    if (user.approved) {
-                        setCurrentUser(user);
-                        setActiveTab('books');
-                        setSearchTerm(''); // Clear search on login
-                    } else {
-                        alert('Your account is pending admin approval');
-                    }
-                } else {
-                    alert('Invalid credentials');
-                }
-            };
+    // We use .toString() to force the DB values (which might be objects/numbers from the DB) to strings.
+    // We use .trim() to remove any invisible leading/trailing whitespace from the DB or input.
+    const user = users.find(u => 
+        u.email.toString().trim() === loginEmail.toString().trim() && 
+        u.password.toString().trim() === loginPassword.toString().trim()
+    );
+    
+    if (user) {
+        if (user.approved) {
+            setCurrentUser(user);
+            setActiveTab('books');
+        } else {
+            alert('Your account is pending admin approval');
+        }
+    } else {
+        alert('Invalid credentials');
+    }
+};
 
             const handleRegister = () => {
                 if (!registerData.name || !registerData.email || !registerData.password) {
@@ -1125,3 +1130,4 @@
     </script>
 </body>
 </html>
+
